@@ -9,7 +9,7 @@ export function Header() {
   return (
     <>
       <header className="bg-ink">
-        <div className="mx-auto flex max-w-6xl items-end justify-between px-4 pt-4 pb-2">
+        <div className="mx-auto flex max-w-6xl items-end justify-between px-4 pt-4">
           <Logo />
           <a
             href={`https://wa.me/${CONTACTS.whatsappNumber}`}
@@ -23,7 +23,7 @@ export function Header() {
       </header>
       {/* The search row sticks to the top while scrolling. */}
       <div className="sticky top-0 z-30 bg-ink">
-        <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 pt-1 pb-3">
+        <div className="mx-auto flex max-w-6xl items-center gap-2 px-4 py-3">
           <Form action="/katalog" role="search" className="relative min-w-0 flex-1">
             <label htmlFor="site-search" className="sr-only">
               {t.search.label}
