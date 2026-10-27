@@ -159,13 +159,94 @@ function slugify(text: string): string {
     .replace(/^-+|-+$/g, "");
 }
 
+// Products without a validated real photo (photo search, see public/products/sources.json).
+const NO_IMAGE = new Set([
+  "flormar-orijinal-tonal-krem",
+  "loreal-tonal-krem",
+  "outdoor-girl-tonal-krem",
+  "tonal-krem",
+  "mery-key-bb-cream-11-in-1-spf-35",
+  "ideal-family-bb-cream-spf-25",
+  "ideal-make-up-bb-cream-medium-spf-15",
+  "miss-fidi-bb-cream-matte-color-control-konsiler",
+  "outdoor-girl-toz-pudra",
+  "outdoor-girl-bronzer-pudra",
+  "4-rengli-enlik-paleti",
+  "jev-maye-enlik",
+  "ikili-highlighter",
+  "clavdio-professional-primer-spf-90",
+  "jev-prep-prime-makiyaj-bazasi",
+  "primer",
+  "eveline-mattifying-fixer-mist",
+  "mak-makiyaj-dondurucu-sprey",
+  "essence-lash-princess-tus",
+  "maybelline-sky-high-tus",
+  "flormar-orijinal-tus",
+  "golden-rose-tus",
+  "outdoor-girl-suya-davamli-layner",
+  "fleur-orijinal-layner",
+  "18-rengli-goz-kolgesi-paleti",
+  "goz-kolgesi-palitrasi-mat-ve-pariltili",
+  "goz-dartma-sablonu",
+  "yara-professional-qas-sabitleyici",
+  "my-note-qas-sabitleyici",
+  "brow-laminator-qas-geli",
+  "qas-geli",
+  "outdoor-girl-all-day-cream-gel-eyebrow-24-saat",
+  "golden-rose-mat-dodaq-boyasi",
+  "golden-rose-lipliner-212",
+  "flormar-dodaq-boyasi",
+  "kiko-dodaq-boyasi",
+  "naked-pomada",
+  "jev-pomada",
+  "outdoor-girl-dodaq-boyasi",
+  "outdoor-girl-pariltili-dodaq-boyasi",
+  "dodaq-boyasi-01-06-calarlari",
+  "dodaq-tinti",
+  "berxatniye-qubki-dodaq-balzami",
+  "sinoz-arindirici-kil-uz-maskasi",
+  "compliment-hidrofil-yag",
+  "belkosmex-detox-micellar-water-5-in-1",
+  "retinol-skin-perfecting-krem-pilinq-0-3",
+  "5-glikolik-tursulu-tonik",
+  "sunscreen-cream-spf-60-ve-spf-90",
+  "essek-sudu-terkibli-agardici-uz-kopuyu",
+  "pantene-sampun",
+  "clear-men-sampun",
+  "ado-sulphate-free-sampun",
+  "sac-baxim-sampunu",
+  "compliment-likit-keratin-sac-maskasi",
+  "rozmarin-ve-nikotin-tursulu-sac-maskasi",
+  "compliment-bio-botanica-active-balzam",
+  "dr-laila-biberiye-biotin-sac-spreyi",
+  "dp-daily-perfection-pro-keratin-seriyasi",
+  "imaj-sac-pudrasi",
+  "sac-parfumu",
+  "compliment-beden-skrabi",
+  "beden-skrabi",
+  "dear-body-beden-spreyi",
+  "dear-body-beden-kremi",
+  "clavdio-beden-spreyi",
+  "miss-fidi-beden-spreyi",
+  "beden-spreyi",
+  "dry-idea-advanced-dry-deodorant",
+  "aloe-vera-comfort-intim-gigiyena-geli",
+  "my-wish-pour-femme-eau-de-parfum",
+  "flory-gardenia-pour-femme-eau-de-parfum",
+  "etir",
+  "dr-laila-boz-rengli-linzalar",
+  "bella-linza",
+  "urek-formali-pudra-pufu-desti",
+]);
+
 function buildProducts(rows: Row[]): Product[] {
   const seen = new Map<string, number>();
   return rows.map(([brand, name, volume, price, category]) => {
     const base = slugify([brand, name].filter(Boolean).join(" "));
     const n = (seen.get(base) ?? 0) + 1;
     seen.set(base, n);
-    return { slug: n === 1 ? base : `${base}-${n}`, brand, name, volume, price, category };
+    const slug = n === 1 ? base : `${base}-${n}`;
+    return { slug, brand, name, volume, price, category, ...(NO_IMAGE.has(slug) && { noImage: true }) };
   });
 }
 

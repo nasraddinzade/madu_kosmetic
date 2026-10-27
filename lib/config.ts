@@ -3,7 +3,7 @@ export const SHOW_DEMO_BANNER = true;
 
 // true: every product uses the same neutral placeholder image.
 // false: products use /public/products/<slug>.webp, products with noImage are hidden.
-export const USE_PLACEHOLDERS = true;
+export const USE_PLACEHOLDERS = false;
 
 export const CART_STORAGE_KEY = "madu-cart-v1";
 export const ORDER_STORAGE_KEY = "madu-order-v1";
